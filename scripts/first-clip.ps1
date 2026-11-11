@@ -13,7 +13,8 @@ param(
   [int]$CampaignId = 0,
   [int]$Top = 3,
   [int]$Length = 30,
-  [ValidateSet('crop','stack','blur')][string]$Layout = 'crop',
+  [ValidateSet('crop','stack','blur','split')][string]$Layout = 'crop',
+  [string]$Filler = '',
   [string]$Cam = '',
   [string]$Platforms = 'youtube,instagram,tiktok',
   [switch]$NoPublish
@@ -35,6 +36,7 @@ $clipIds = ($detectLog | Select-String -Pattern 'clip #(\d+)' -AllMatches).Match
 foreach ($id in ($clipIds | Select-Object -First $Top)) {
   $render = @('render', $id, '--layout', $Layout)
   if ($Cam) { $render += @('--cam', $Cam) }
+  if ($Filler) { $render += @('--filler', $Filler) }
   clipengine @render
   if (-not $NoPublish) { clipengine publish $id --platforms $Platforms }
 }

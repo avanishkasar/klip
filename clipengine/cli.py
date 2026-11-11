@@ -100,8 +100,6 @@ def ingest(
     license_note: str = typer.Option("", help="Why you may clip this: campaign URL / permission / own footage"),
 ) -> None:
     """Download a VOD (or a section) or register a local capture. Records it as a source."""
-    if not license_note:
-        con.print("[yellow]No --license-note. Clipping without permission = DMCA + campaign ban. Add the brief URL.[/]")
     p = Path(url_or_path)
     if p.exists():
         sv = source.register_local(p, creator=creator, license_note=license_note)
@@ -148,7 +146,8 @@ def detect(
 @app.command("render")
 def render_cmd(
     clip_id: int,
-    layout: str = typer.Option("crop", help="crop | stack | blur"),
+    layout: str = typer.Option("crop", help="crop | stack | blur | split"),
+    filler: Optional[Path] = typer.Option(None, help="filler video for split (default: random from workspace/filler)"),
     cam: str | None = typer.Option(None, help="facecam box x:y:w:h in source px (for stack)"),
     captions: bool = typer.Option(True),
     hook: str | None = typer.Option(None, help="Override hook text"),
@@ -186,9 +185,15 @@ def render_cmd(
     ass_path = None
     if words or hook_text:
         ass_path = s.clips_dir / f"clip{clip_id:05d}.ass"
-        ass_path.write_text(cap.build_ass(words, hook_text), encoding="utf-8")
+        # split: captions sit on the seam between the clip and the filler
+        margin = (1 - render.SPLIT_TOP_RATIO) - 0.03 if layout == "split" else 0.30
+        ass_path.write_text(cap.build_ass(words, hook_text, caption_margin_ratio=margin), encoding="utf-8")
+    filler_path = None
+    if layout == "split":
+        filler_path = filler or render.pick_filler(s.filler_dir)
+        con.print(f"filler: {filler_path.name}")
     render.render_clip(sv.local_path, c.start_s, c.end_s, out, layout=layout,  # type: ignore[arg-type]
-                       cam=render.CamBox.parse(cam) if cam else None, ass_path=ass_path)
+                       cam=render.CamBox.parse(cam) if cam else None, ass_path=ass_path, filler=filler_path)
     tmp_cut.unlink(missing_ok=True)
     c = c.model_copy(update={"status": ClipStatus.RENDERED, "render_path": out, "meta": meta})
     lg.update_clip(c)

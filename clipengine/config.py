@@ -67,11 +67,15 @@ class Settings(BaseSettings):
         return self.clip_workspace / "renders"
 
     @property
+    def filler_dir(self) -> Path:
+        return self.clip_workspace / "filler"
+
+    @property
     def logs_dir(self) -> Path:
         return self.clip_workspace / "logs"
 
     def ensure_dirs(self) -> None:
-        for d in (self.sources_dir, self.clips_dir, self.renders_dir, self.logs_dir):
+        for d in (self.sources_dir, self.clips_dir, self.renders_dir, self.logs_dir, self.filler_dir):
             d.mkdir(parents=True, exist_ok=True)
         self.clip_db_path.parent.mkdir(parents=True, exist_ok=True)
 

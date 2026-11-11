@@ -105,6 +105,22 @@ What happens:
 Layouts: `crop` (center 9:16; GTA action is centered, best default), `stack` (facecam top 32%, gameplay bottom; give
 the webcam box in source pixels once per creator), `blur` (full frame on blurred background when the crop loses context).
 
+### Split-screen mode (clip on top, filler gameplay below)
+
+Drop one or more long filler videos (Subway Surfers, parkour, satisfying loops) into `workspace\filler\`, then:
+
+```powershell
+.\scripts\first-clip.ps1 -Url <vod> -Start 5400 -End 6300 -Top 3 -Layout split
+```
+
+Each render picks a random filler file and a random start offset, mutes it, loops it if it is shorter than the clip,
+and puts the captions on the seam. Use `-Filler C:\path\file.mp4` to force a specific one.
+
+Risk you are accepting when clipping without a brief or permission: filler does not defeat audio/video content
+matching, takedowns and strikes land on the account (three strikes ends a YouTube channel), YouTube's reused-content
+policy blocks monetisation review, and campaigns pay nothing for unapproved clips. Run this mode on accounts you can
+afford to lose and keep campaign work on a separate, clean account.
+
 Manual quality gate (30 seconds per clip, do not skip): open the mp4, check the first 1.5s hooks, captions are right,
 nothing in the brief is violated. If it is bad, `clipengine render <id> --hook "better hook"` or just do not publish it.
 

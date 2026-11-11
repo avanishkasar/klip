@@ -30,7 +30,7 @@ clipengine report
 | `campaign add/list` | paid campaign terms (rate per 1k, cap, min views, required credit text) |
 | `ingest <url\|path> [--start --end]` | yt-dlp section download (never the whole 6h VOD) or register local capture |
 | `detect <source_id>` | audio peaks + scene density -> candidate windows; Claude refines using the transcript |
-| `render <clip_id> [--layout crop\|stack\|blur] [--cam x:y:w:h]` | NVENC/x264 9:16 render, loudnorm, burned captions + hook; Claude writes title/caption/hashtags |
+| `render <clip_id> [--layout crop\|stack\|blur\|split] [--cam x:y:w:h] [--filler path]` | NVENC/x264 9:16 render, loudnorm, burned captions + hook; Claude writes title/caption/hashtags |
 | `publish <clip_id>` | YouTube Data API resumable upload, Instagram Reels Graph API, TikTok sidecar/API |
 | `mark-posted` | record a manual upload |
 | `sync-views` | pull views from YouTube + Instagram |

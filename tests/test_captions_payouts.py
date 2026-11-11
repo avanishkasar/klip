@@ -28,3 +28,17 @@ def test_build_filter_layouts():
     assert "[vout]" in build_filter("crop", 1920, 1080, None, None)
     assert "vstack" in build_filter("stack", 1920, 1080, CamBox.parse("0:0:480:270"), None)
     assert "boxblur" in build_filter("blur", 1920, 1080, None, None)
+
+
+def test_split_filter_and_filler_pick(tmp_path):
+    import pytest
+
+    from clipengine.render import pick_filler
+
+    g = build_filter("split", 1920, 1080, None, None)
+    assert "[1:v]" in g and "vstack" in g and "crop=1080:1056" in g and "crop=1080:864" in g
+    with pytest.raises(FileNotFoundError):
+        pick_filler(tmp_path)
+    (tmp_path / "a.mp4").write_bytes(b"x")
+    (tmp_path / "notes.txt").write_text("x")
+    assert pick_filler(tmp_path).name == "a.mp4"

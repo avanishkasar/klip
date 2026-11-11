@@ -75,6 +75,7 @@ def build_ass(
     caption_size: int = 72,
     hook_size: int = 80,
     hook_duration_s: float = 2.0,
+    caption_margin_ratio: float = 0.30,
 ) -> str:
     """ASS with: optional top hook for first N seconds + bottom-third pop captions, current word highlighted."""
     header = f"""[Script Info]
@@ -86,7 +87,7 @@ ScaledBorderAndShadow: yes
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Cap,{font},{caption_size},&H00FFFFFF,&H0000FFFF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,6,2,2,60,60,{int(height*0.30)},1
+Style: Cap,{font},{caption_size},&H00FFFFFF,&H0000FFFF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,6,2,2,60,60,{int(height*caption_margin_ratio)},1
 Style: Hook,{font},{hook_size},&H0000FFFF,&H00FFFFFF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,7,3,8,60,60,{int(height*0.12)},1
 
 [Events]
