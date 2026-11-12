@@ -31,13 +31,13 @@ git clone https://github.com/avanishkasar/klip.git C:\dev\klip; Set-Location C:\
 - [ ] Paste into `C:\dev\klip\.env` as `ANTHROPIC_API_KEY=`
 
 ### 5. YouTube upload access (10 min)
-- [ ] console.cloud.google.com -> new project -> enable **YouTube Data API v3**
-- [ ] OAuth consent screen: External, add yourself as test user
-- [ ] Credentials -> OAuth client ID -> **Desktop app** -> download JSON
-- [ ] Save it as `C:\dev\klip\secrets\yt_client_secret.json`
+- [x] console.cloud.google.com -> new project -> enable **YouTube Data API v3** (project `clipengine-514505`)
+- [x] OAuth consent screen: External, add yourself as test user
+- [x] Credentials -> OAuth client ID -> **Desktop app** -> download JSON
+- [x] Save it as `C:\dev\klip\secrets\yt_client_secret.json`
 
 ### 6. Instagram (5 min)
-- [ ] In the app: Settings -> Account type -> switch to **Creator**
+- [x] In the app: Settings -> Account type -> switch to **Creator** (done on `wind_clipsyt`, category Gamer)
 - [ ] Post Reels by hand for now (the mp4 and caption are ready after each render)
 
 ### 7. Whop (5 min) — not signed up yet
